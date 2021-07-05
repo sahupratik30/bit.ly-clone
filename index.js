@@ -2,10 +2,9 @@ const express = require("express");
 const createHttpError = require("http-errors");
 const shortid = require("shortid");
 const ShortUrl = require("./models/shortUrl");
-const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 mongoose
-  .connect(process.env.MONGODB_URL, {
+  .connect("mongodb://localhost:27017/urlShortener", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -33,7 +32,7 @@ app.post("/", async (req, res, next) => {
     const urlExists = await ShortUrl.findOne({ full: url });
     if (urlExists) {
       res.render("index", {
-        header: `${req.hostname}`,
+        header: `${req.headers.host}`,
         short_url: `${urlExists.short}`,
       });
       return;
@@ -41,7 +40,7 @@ app.post("/", async (req, res, next) => {
     const shortUrl = new ShortUrl({ full: url, short: shortid.generate() });
     const result = await shortUrl.save();
     res.render("index", {
-      header: `${req.hostname}`,
+      header: `${req.headers.host}`,
       short_url: `${result.short}`,
     });
   } catch (error) {
