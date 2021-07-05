@@ -59,10 +59,6 @@
         flex-direction: column;
         justify-content: center;
       }
-      table {
-        width: 70vw !important;
-        margin: 0 auto !important;
-      }
       form div {
         display: flex;
         justify-content: space-evenly;
@@ -79,40 +75,32 @@
     </style>
   </head>
   <body>
+    <% if (locals.error) { %>
+    <h3 class="err text-danger text-center display-5 my-5"><%= error %></h3>
+    <% } %>
     <h1 class="text-center my-3 font-weight-bold text-success">
       URL Shortener
     </h1>
-    <form action="/shortUrl" method="POST" class="my-3">
+    <form action="/" method="POST" class="my-3">
       <div>
         <input
           class="form-control"
           type="url"
           name="url"
           id="url"
-          placeholder="Type the long url..."
+          placeholder="Type URL here..."
         />
-        <button type="submit" class="btn btn-success">Shrink</button>
+        <button type="submit" class="btn btn-success">Create URL</button>
       </div>
     </form>
-    <table class="table table-responsive table-striped">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col">URL</th>
-          <th scope="col">Short URL</th>
-          <th scope="col">Clicks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% shortUrls.forEach(shortUrl =>{%>
-        <tr>
-          <td><a href="<%= shortUrl.full %> "><%= shortUrl.full %></a></td>
-          <td>
-            <a href="<%= shortUrl.short %>">short.ly/<%= shortUrl.short %></a>
-          </td>
-          <td><%= shortUrl.clicks %></td>
-        </tr>
-        <% }) %>
-      </tbody>
-    </table>
+    <div class="shortUrl">
+      <h3 class="text-center display-5 mt-5">
+        <% if (locals.short_url) { %>
+        <a href="<%= short_url %>" class="text-decoration-none text-success"
+          ><%= locals.header %>/<%= short_url %></a
+        >
+        <% } %>
+      </h3>
+    </div>
   </body>
 </html>
