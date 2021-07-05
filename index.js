@@ -32,7 +32,7 @@ app.post("/", async (req, res, next) => {
     const urlExists = await ShortUrl.findOne({ full: url });
     if (urlExists) {
       res.render("index", {
-        header: `${req.headers.host}`,
+        header: `${req.hostname}`,
         short_url: `${urlExists.short}`,
       });
       return;
@@ -40,7 +40,7 @@ app.post("/", async (req, res, next) => {
     const shortUrl = new ShortUrl({ full: url, short: shortid.generate() });
     const result = await shortUrl.save();
     res.render("index", {
-      header: `${req.headers.host}`,
+      header: `${req.hostname}`,
       short_url: `${result.short}`,
     });
   } catch (error) {
